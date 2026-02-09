@@ -1,5 +1,8 @@
 #!/bin/bash
 
+PACK_NAME="hectorcastelliheadlesstools"
+VERSION="1.0.0"
+
 # Load .env variables
 if [ -f .env ]; then
 	export "$(grep -v '^#' .env | xargs)"
@@ -8,7 +11,6 @@ fi
 # 2. Crash if the variable is missing
 : "${INSTANCE_PATH:?Error: INSTANCE_PATH is not defined. Ensure it is in your .env or environment.}"
 
-PACK_NAME="hectorcastelliheadlesstools.zip"
 WORLD_NAME="New World"
 
 # Specific destinations
@@ -26,10 +28,10 @@ if [ ! -f "$TEMP_ZIP" ]; then
 fi
 
 echo "🚚 Copying to Datapacks..."
-cp "$TEMP_ZIP" "$DATAPACK_DEST/$PACK_NAME"
+cp "$TEMP_ZIP" "$DATAPACK_DEST/$PACK_NAME-$VERSION.zip"
 
 echo "🚚 Copying to Resourcepacks..."
-cp "$TEMP_ZIP" "$RESOURCE_DEST/$PACK_NAME"
+cp "$TEMP_ZIP" "$RESOURCE_DEST/$PACK_NAME-$VERSION.zip"
 
 # Cleanup
 rm "$TEMP_ZIP"
