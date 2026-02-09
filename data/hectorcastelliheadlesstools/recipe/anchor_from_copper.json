@@ -7,6 +7,7 @@
   "result": {
     "components": {
       "minecraft:custom_data": {
+        "datapack_id": "hectorcastelliheadlesstools",
         "type": "hectorcastelliheadlesstools_anchor"
       },
       "minecraft:item_model": "hectorcastelliheadlesstools:anchor",

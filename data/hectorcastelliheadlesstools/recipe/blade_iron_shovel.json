@@ -12,6 +12,7 @@
   "result": {
     "components": {
       "minecraft:custom_data": {
+        "datapack_id": "hectorcastelliheadlesstools",
         "type": "hectorcastelliheadlesstools_blade_iron_shovel"
       },
       "minecraft:item_model": "hectorcastelliheadlesstools:blade_iron_shovel",
