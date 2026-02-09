@@ -2,12 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
+    "N": [
+      "minecraft:copper_nugget"
+    ],
     "X": [
       "minecraft:copper_ingot"
     ]
   },
   "pattern": [
-    "X"
+    "X",
+"N"
   ],
   "result": {
     "components": {

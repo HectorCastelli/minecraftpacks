@@ -1,7 +1,9 @@
 {
   "workbench.iconTheme": "mc-dp-icons",
   "cSpell.words": [
-    "hectorcastelliheadlesstools"
+    "datapack",
+    "hectorcastelliheadlesstools",
+    "netherite"
   ],
   "files.associations": {
     "*.mcmeta": "json"
