@@ -1,14 +1,14 @@
 {
   "pack": {
     "min_format": [
-      75,
-      0
+      94,
+      1
     ],
     "max_format": [
       94,
-      0
+      1
     ],
-    "pack_format": 94,
+    "pack_format": 75,
     "description": "A vanilla friendly way to carry multiple tools with you and assemble them on-the-go!"
   }
 }

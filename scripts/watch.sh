@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TARGET_SCRIPT="./install.sh"
+TARGET_SCRIPT="$(git rev-parse --show-toplevel)/scripts/install.sh"
 INTERVAL=2 # How many seconds to wait between checks
 
 # Get the initial state of the directory
@@ -9,12 +9,11 @@ get_last_mod() {
 	find . -not -path '*/.*' -printf '%T@\n' | sort -n | tail -1 | sha1sum
 }
 
-LAST_MOD=$(get_last_mod)
+LAST_MOD="" # Immediately install
 
 echo "🕒 Polling for changes every $INTERVAL seconds..."
 
 while true; do
-	sleep "$INTERVAL"
 	CURRENT_MOD=$(get_last_mod)
 
 	if [[ "$CURRENT_MOD" != "$LAST_MOD" ]]; then
@@ -27,4 +26,5 @@ while true; do
 		LAST_MOD=$(get_last_mod)
 		echo "✅ Done. Waiting for next change..."
 	fi
+	sleep "$INTERVAL"
 done
