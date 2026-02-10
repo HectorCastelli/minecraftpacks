@@ -2,6 +2,7 @@
   "parent": "minecraft:item/handheld",
   "textures": {
     "layer0": "minecraft:item/iron_shovel",
-    "layer1": "hectorcastelliheadlesstools:item/blade_overlay"
+    "layer1": "minecraft:item/iron_nugget",
+    "layer2": "hectorcastelliheadlesstools:item/blade_overlay"
   }
 }

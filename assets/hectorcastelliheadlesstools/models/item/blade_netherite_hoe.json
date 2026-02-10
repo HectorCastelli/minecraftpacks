@@ -2,6 +2,7 @@
   "parent": "minecraft:item/handheld",
   "textures": {
     "layer0": "minecraft:item/netherite_hoe",
-    "layer1": "hectorcastelliheadlesstools:item/blade_overlay"
+    "layer1": "minecraft:item/gold_nugget",
+    "layer2": "hectorcastelliheadlesstools:item/blade_overlay"
   }
 }
