@@ -1,14 +1,11 @@
-name: CI/CD Pipeline
+name: CI/CD
 
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-  workflow_run:
-    workflows: [Prepare Release]
-    types:
-      - completed
+  workflow_dispatch: # Allows manual triggering of a release
 
 jobs:
   build:
@@ -20,15 +17,14 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.14'
 
       - name: Run Build
         run: |
-          # Run build.py to verify all packs in /packs can be zipped
+          # Run build.py to verify and zip all packs
           python3 scripts/build.py
 
       - name: Upload Artifacts (Internal)
-        if: github.event_name == 'release'
         uses: actions/upload-artifact@v4
         with:
           name: latest-build
@@ -39,10 +35,11 @@ jobs:
 
   release:
     needs: build
-    if: github.event_name == 'workflow_run'
+    # Only run this job if the workflow was triggered manually
+    if: github.event_name == 'workflow_dispatch' 
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write # Required to create releases
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
@@ -50,9 +47,17 @@ jobs:
           name: latest-build
           path: dist
 
-      - name: Upload to GitHub Release
+      - name: Get current date
+        id: date
+        run: echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV #
+
+      - name: Create and Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ env.DATE }}
+          name: ${{ env.DATE }}
           files: dist/*.zip
+          prerelease: true
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
