@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "minecraft:item/netherite_axe",
+    "layer0": "hectorcastelliheadlesstools:item/blade_netherite_axe",
     "layer1": "hectorcastelliheadlesstools:item/blade_nugget_gold",
     "layer2": "hectorcastelliheadlesstools:item/blade_overlay"
   }

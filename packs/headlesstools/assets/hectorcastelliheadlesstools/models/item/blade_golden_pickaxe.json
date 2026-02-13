@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "minecraft:item/golden_pickaxe",
+    "layer0": "hectorcastelliheadlesstools:item/blade_golden_pickaxe",
     "layer1": "hectorcastelliheadlesstools:item/blade_nugget_gold",
     "layer2": "hectorcastelliheadlesstools:item/blade_overlay"
   }
