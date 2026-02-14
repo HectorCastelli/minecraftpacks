@@ -1,0 +1,27 @@
+{
+  "pack": {
+    "description": "An alternative to iron buckets."
+  },
+  "metadata": {
+    "version": "1.0.0",
+    "minecraft_version": "1.21.11",
+    "dp": {
+      "min_format": [
+        94,
+        1
+      ],
+      "max_format": [
+        94,
+        1
+      ]
+    },
+    "rp": {
+      "min_format": [
+        75
+      ],
+      "max_format": [
+        75
+      ]
+    }
+  }
+}
