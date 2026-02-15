@@ -1,0 +1,12 @@
+{
+  "condition": "minecraft:entity_properties",
+  "entity": "this",
+  "predicate": {
+    "inventory": {
+      "items": "minecraft:water_bucket",
+      "predicates": {
+        "minecraft:custom_data": "{bucketless:true,leak:true}"
+      }
+    }
+  }
+}
