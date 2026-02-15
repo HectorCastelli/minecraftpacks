@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "minecraft:stick",
+    "#": "#minecraft:planks"
+  },
+  "pattern": [
+    "XXX",
+    "# #",
+    " # "
+  ],
+  "result": {
+    "components": {
+      "minecraft:custom_data": {
+        "bucketless": true,
+        "leak": true,
+        "burn": "true"
+      },
+      "minecraft:item_model": "bucketless:crude_bucket",
+      "minecraft:item_name": "Crude Bucket",
+      "minecraft:max_damage": 100,
+      "minecraft:damage": 0
+    },
+    "count": 1,
+    "id": "minecraft:bucket"
+  }
+}
