@@ -37,4 +37,4 @@
 
 ### Features
 
-- Implemented first version.
+- Implemented first version
