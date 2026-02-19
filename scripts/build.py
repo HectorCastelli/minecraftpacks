@@ -67,6 +67,10 @@ def run_build(pack_name):
                     if extra_mcmeta and rel_path.name == "pack.mcmeta":
                         continue
 
+                    # Skip the marketing directory
+                    if "marketing" in rel_path.parts:
+                        continue
+
                     # Handle testing functions
                     if "test" in rel_path.parts:
                         if is_debug():
