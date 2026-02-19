@@ -30,6 +30,16 @@ def load_env():
                 os.environ[key.strip()] = val.strip().strip('"').strip("'")
 
 
+def is_debug():
+    # Get the variable and normalize it to lowercase
+    debug_val = os.environ.get("DEBUG", "").lower()
+
+    if debug_val and debug_val != "false" and debug_val != "0":
+        return True
+    else:
+        return False
+
+
 # Immediately load the env and setup logging when imported
 load_env()
 setup_logging()

@@ -4,7 +4,8 @@ import json
 import zipfile
 import logging
 import shutil
-from utils import REPO_ROOT, DIST_DIR, PACKS_DIR
+from pathlib import Path
+from utils import REPO_ROOT, DIST_DIR, PACKS_DIR, is_debug
 
 
 def run_build(pack_name):
@@ -47,6 +48,13 @@ def run_build(pack_name):
     ]:
         out_file = DIST_DIR / f"{pack_name}-{version}-{minecraft_version}-{suffix}.zip"
         with zipfile.ZipFile(out_file, "w", zipfile.ZIP_DEFLATED) as zf:
+            # Add debug notice
+            if is_debug():
+                zf.writestr(
+                    "DEBUG",
+                    "This is a debug build and may have extra functionality that won't show up in regular game. Be careful!",
+                )
+
             # Copy global files (e.g., LICENSE)
             zf.write(REPO_ROOT / "LICENSE", "LICENSE")
 
@@ -58,6 +66,21 @@ def run_build(pack_name):
                     # Skip original mcmeta if it should be rewritten
                     if extra_mcmeta and rel_path.name == "pack.mcmeta":
                         continue
+
+                    # Handle testing functions
+                    if "test" in rel_path.parts:
+                        if is_debug():
+                            # Replace "test" in rel_path with "pack_name"
+                            patched_path = Path(
+                                *(
+                                    pack_name if part == "test" else part
+                                    for part in rel_path.parts
+                                )
+                            )
+                            zf.write(file, patched_path)
+                            continue  # Avoid saving the same file twice
+                        else:
+                            continue
 
                     # If the directory was explicitly excluded
                     if exclude_dir in rel_path.parts:
