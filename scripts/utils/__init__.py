@@ -11,7 +11,6 @@ __all__ = [
     setup_logging,
     load_env,
     is_debug,
-    get_changelog,
 ]
 
 # Immediately load the env and setup logging when imported
