@@ -99,6 +99,132 @@ def run_build(pack_name):
         created_files.append(out_file)
         logging.debug(f"Created {suffix}pack for {pack_name}")
 
+    # Build universal mod package
+    out_file = DIST_DIR / f"{pack_name}-{version}-{minecraft_version}-mod.zip"
+    with zipfile.ZipFile(out_file, "w", zipfile.ZIP_DEFLATED) as zf:
+        # Add debug notice
+        if is_debug():
+            zf.writestr(
+                "DEBUG",
+                "This is a debug build and may have extra functionality that won't show up in regular game. Be careful!",
+            )
+
+        # Copy global files (e.g., LICENSE)
+        zf.write(REPO_ROOT / "LICENSE", "LICENSE")
+
+        # Copy pack files
+        for file in pack_src.rglob("*"):
+            if file.is_file():
+                rel_path = file.relative_to(pack_src)
+
+                # Skip the marketing directory
+                if "marketing" in rel_path.parts:
+                    continue
+
+                # Handle testing functions
+                if "test" in rel_path.parts:
+                    if is_debug():
+                        # Replace "test" in rel_path with "pack_name"
+                        patched_path = Path(
+                            *(
+                                pack_name if part == "test" else part
+                                for part in rel_path.parts
+                            )
+                        )
+                        zf.write(file, patched_path)
+                        continue  # Avoid saving the same file twice
+                    else:
+                        continue
+
+                zf.write(file, rel_path)
+
+        # Copy universal files
+        quit_definition = {
+            "schema_version": 1,
+            "quilt_loader": {
+                "group": "io.github.hectorcastelli",
+                "id": pack_name,
+                "version": version,
+                "metadata": {
+                    "name": pack_name,
+                    "description": pack_data.get("description"),
+                    "contributors": {"HectorCastelli": "Member"},
+                    "contact": {
+                        "homepage": f"https://modrinth.com/datapack/{metadata.get('modrinth').get('project_name')}",
+                        "sources": f"https://github.com/HectorCastelli/minecraftpacks/tree/main/packs/{pack_name}",
+                        "issues": "https://github.com/HectorCastelli/minecraftpacks/issues",
+                    },
+                    "icon": "pack.png",
+                },
+                "intermediate_mappings": "net.fabricmc:intermediary",
+                "depends": [
+                    {
+                        "id": "quilt_resource_loader",
+                        "versions": "*",
+                        "unless": "fabric-resource-loader-v0",
+                    }
+                ],
+            },
+        }
+        zf.writestr("quilt.mod.json", json.dumps(quit_definition, indent=2))
+
+        fabric_definition = {
+            "schemaVersion": 1,
+            "id": pack_name,
+            "version": version,
+            "name": pack_name,
+            "description": pack_data.get("description"),
+            "authors": ["HectorCastelli"],
+            "contact": {
+                "homepage": f"https://modrinth.com/datapack/{metadata.get('modrinth').get('project_name')}",
+                "sources": f"https://github.com/HectorCastelli/minecraftpacks/tree/main/packs/{pack_name}",
+                "issues": "https://github.com/HectorCastelli/minecraftpacks/issues",
+            },
+            "license": "Unlicense",
+            "icon": "pack.png",
+            "environment": "*",
+            "depends": {"fabric-resource-loader-v0": "*"},
+        }
+        zf.writestr("fabric.mod.json", json.dumps(fabric_definition, indent=2))
+
+        forge_definition = f"""modLoader = "lowcodefml"
+loaderVersion = "[40,)"
+license = "Unlicense"
+showAsResourcePack = false
+issueTrackerURL = "https://github.com/HectorCastelli/minecraftpacks/issues"
+
+[[mods]]
+modId = "{pack_name}"
+version = "{version}"
+displayName = "{pack_name}"
+description = "{pack_data.get("description")}"
+logoFile = "pack.png"
+updateJSONURL = "https://api.modrinth.com/updates/oJ1q5vHh/forge_updates.json"
+authors = "HectorCastelli"
+displayURL = "https://modrinth.com/datapack/{metadata.get("modrinth").get("project_name")}"
+"""
+        zf.writestr("META-INF/mods.toml", forge_definition)
+
+        neoforge_definition = f"""modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "Unlicense"
+showAsResourcePack = false
+issueTrackerURL = "https://github.com/HectorCastelli/minecraftpacks/issues"
+
+[[mods]]
+modId = "{pack_name}"
+version = "{version}"
+displayName = "{pack_name}"
+description = "{pack_data.get("description")}"
+logoFile = "pack.png"
+updateJSONURL = "https://api.modrinth.com/updates/oJ1q5vHh/forge_updates.json"
+authors = "HectorCastelli"
+displayURL = "https://modrinth.com/datapack/{metadata.get("modrinth").get("project_name")}"
+"""
+        zf.writestr("META-INF/neoforge.mods.toml", forge_definition)
+    created_files.append(out_file)
+    logging.debug(f"Created universal mod for {pack_name}")
+
     logging.info(f"Built {pack_name}: {' '.join([f.name for f in created_files])}")
     return created_files
 

@@ -5,6 +5,9 @@
   "metadata": {
     "version": "2.2.0",
     "minecraft_version": "1.21.11",
+    "modrinth": {
+      "project_name": "headlesstools"
+    },
     "dp": {
       "min_format": [
         94,
