@@ -6,6 +6,7 @@
     "superant.mc-dp-icons",
     "thesalt.datapack-optimization",
     "ms-python.python",
-    "charliermarsh.ruff"
+    "charliermarsh.ruff",
+    "ogre.json-synchronizer"
   ]
 }
